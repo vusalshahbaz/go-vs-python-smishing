@@ -44,7 +44,22 @@ Each model was implemented and tested in both **Go** and **Python** environments
 
 ## ✅ Conclusion
 
-- **Python** delivers slightly higher accuracy and precision in ML model metrics.
-- **Go** provides a lightweight and resource-efficient alternative, especially suitable for embedded or cloud-native deployments.
+While Python shows slightly better performance in model accuracy and prediction speed, this advantage is largely due to its mature machine learning ecosystem:
 
+Most popular Python libraries (like NumPy, scikit-learn, pandas) are built as wrappers around highly optimized C/C++ code, enabling fast numerical operations.
+
+Python benefits from a large and active community, offering a wide range of ready-to-use ML tools, pre-trained models, and educational resources.
+
+As a result, tasks like text vectorization (e.g., TF-IDF), model training, and evaluation are straightforward and efficient in Python.
+
+On the other hand, Go (Golang):
+
+Has limited support for advanced machine learning out of the box.
+
+Lacks native high-level ML libraries and often requires custom implementations or bindings to external C libraries.
+
+Is still an emerging choice for ML but excels in performance, concurrency, and deployment (especially for building fast, lightweight, and statically compiled services).
+
+🧠 Summary:
+Python is better suited for fast prototyping and leveraging existing ML solutions, while Go is ideal for production-level systems where performance, memory efficiency, and deployment simplicity matter most.
 ---
