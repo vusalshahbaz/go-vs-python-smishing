@@ -30,12 +30,12 @@ Each model was implemented and tested in both **Go** and **Python** environments
 
 ## ⚙️ App Metrics
 
-| **App Metric**        | **Description**                                                              | **Go**     | **Python** |
-|-----------------------|-------------------------------------------------------------------------------|------------|------------|
-| **Image Size**        | Size of the compiled application or container image.                         | 388 MB     | 1.26 GB    |
-| **Memory Usage**      | Peak memory usage during inference.                                          | 104 MB     | 325 MB     |
-| **CPU**               | Average CPU usage during prediction (in CPU cores).                          | 0.12 cores | 0.108 cores|
-| **Prediction Duration** | Time taken to make a single prediction.                                      | 10 ms      | 9 ms       |
+| **App Metric**          | **Description**                                      | **Go**     | **Python**  |
+|-------------------------|------------------------------------------------------|------------|-------------|
+| **Image Size**          | Size of the compiled application or container image. | 388 MB     | 1.26 GB     |
+| **Memory Usage**        | Peak memory usage during inference.                  | 104 MB     | 325 MB      |
+| **CPU**                 | Average CPU usage during prediction (in CPU cores).  | 0.12 cores | 0.108 cores |
+| **Prediction Duration** | Time taken to make a single prediction.              | 10 ms      | 9 ms        |
 
 > **Description:**  
 > Despite Python being slightly faster in prediction, the Go implementation excels in memory usage and produces significantly smaller binaries — making it more efficient for deployment in resource-constrained environments.
@@ -45,21 +45,15 @@ Each model was implemented and tested in both **Go** and **Python** environments
 ## ✅ Conclusion
 
 While Python shows slightly better performance in model accuracy and prediction speed, this advantage is largely due to its mature machine learning ecosystem:
-
-Most popular Python libraries (like NumPy, scikit-learn, pandas) are built as wrappers around highly optimized C/C++ code, enabling fast numerical operations.
-
-Python benefits from a large and active community, offering a wide range of ready-to-use ML tools, pre-trained models, and educational resources.
-
-As a result, tasks like text vectorization (e.g., TF-IDF), model training, and evaluation are straightforward and efficient in Python.
+- Most popular Python libraries (like NumPy, scikit-learn, pandas) are built as wrappers around highly optimized C/C++ code, enabling fast numerical operations.
+- Python benefits from a large and active community, offering a wide range of ready-to-use ML tools, pre-trained models, and educational resources.
+-  As a result, tasks like text vectorization (e.g., TF-IDF), model training, and evaluation are straightforward and efficient in Python.
 
 On the other hand, Go (Golang):
+- Has limited support for advanced machine learning out of the box.
+- Lacks native high-level ML libraries and often requires custom implementations or bindings to external C libraries.
+- Is still an emerging choice for ML but excels in performance, concurrency, and deployment (especially for building fast, lightweight, and statically compiled services).
 
-Has limited support for advanced machine learning out of the box.
-
-Lacks native high-level ML libraries and often requires custom implementations or bindings to external C libraries.
-
-Is still an emerging choice for ML but excels in performance, concurrency, and deployment (especially for building fast, lightweight, and statically compiled services).
-
-🧠 Summary:
-Python is better suited for fast prototyping and leveraging existing ML solutions, while Go is ideal for production-level systems where performance, memory efficiency, and deployment simplicity matter most.
+> 🧠 Summary:
+> Python is better suited for fast prototyping and leveraging existing ML solutions, while Go is ideal for production-level systems where performance, memory efficiency, and deployment simplicity matter most.
 ---
