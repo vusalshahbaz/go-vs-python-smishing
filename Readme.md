@@ -19,9 +19,8 @@ Each model was implemented and tested in both **Go** and **Python** environments
 | **Metric**   | **Go** | **Python** |
 |--------------|--------|------------|
 | Accuracy     | 0.95   | 0.97       |
-| Precision    | 0.92   | 0.97       |
+| Precision    | 0.93   | 0.97       |
 | Recall       | 0.85   | 0.87       |
-| F1-Score     | 0.88   | 0.92       |
 
 > **Description:**  
 > This table shows the classification performance metrics of the models in both Go and Python implementations. While Python achieves slightly higher scores, Go remains competitive with excellent performance.
