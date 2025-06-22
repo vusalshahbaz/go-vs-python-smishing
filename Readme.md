@@ -34,4 +34,17 @@ Each model was implemented and tested in both **Go** and **Python** environments
 |-----------------------|-------------------------------------------------------------------------------|------------|------------|
 | **Image Size**        | Size of the compiled application or container image.                         | 388 MB     | 1.26 GB    |
 | **Memory Usage**      | Peak memory usage during inference.                                          | 104 MB     | 325 MB     |
-| **CPU**               | Average CPU usage during prediction (in CPU cores).                          | 0.
+| **CPU**               | Average CPU usage during prediction (in CPU cores).                          | 0.12 cores | 0.108 cores|
+| **Prediction Duration** | Time taken to make a single prediction.                                      | 10 ms      | 9 ms       |
+
+> **Description:**  
+> Despite Python being slightly faster in prediction, the Go implementation excels in memory usage and produces significantly smaller binaries — making it more efficient for deployment in resource-constrained environments.
+
+---
+
+## ✅ Conclusion
+
+- **Python** delivers slightly higher accuracy and precision in ML model metrics.
+- **Go** provides a lightweight and resource-efficient alternative, especially suitable for embedded or cloud-native deployments.
+
+---
