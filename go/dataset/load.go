@@ -2,6 +2,7 @@ package dataset
 
 import (
 	"encoding/csv"
+	"fmt"
 	"math/rand/v2"
 	"os"
 )
@@ -12,7 +13,7 @@ func (r *randomSource) Uint64() uint64 {
 	return rand.Uint64()
 }
 
-func LoadPhishingData(filename string) ([]string, []float64) {
+func LoadPhishingData(filename string, classess map[string]float64) ([]string, []float64) {
 	file, err := os.Open(filename)
 	if err != nil {
 		panic(err)
@@ -40,14 +41,12 @@ func LoadPhishingData(filename string) ([]string, []float64) {
 
 		features[i] = record[1]
 
-		val := record[0]
-		if val == "ham" {
-			labels[i] = 0 // Malignant
+		label, ok := classess[record[0]]
+		if !ok {
+			panic(fmt.Sprintf("Unknown class: %s", record[0]))
 		}
 
-		if val == "spam" {
-			labels[i] = 1 // Benign
-		}
+		labels[i] = label
 	}
 
 	return features, labels

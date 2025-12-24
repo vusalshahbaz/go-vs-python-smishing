@@ -7,7 +7,7 @@ from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from flask import Flask, request, jsonify
-from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import time
 # Load dataset
 def load_data():
@@ -66,9 +66,25 @@ print(f"Time taken to predict: {elapsed} seconds")
 accuracy = accuracy_score(y_test, ensemble_predictions)
 precision = precision_score(y_test, ensemble_predictions)
 recall = recall_score(y_test, ensemble_predictions)
+
+# Macro-averaged metrics
+macro_precision = precision_score(y_test, ensemble_predictions, average='macro')
+macro_recall = recall_score(y_test, ensemble_predictions, average='macro')
+macro_f1 = f1_score(y_test, ensemble_predictions, average='macro')
+
+# Confusion matrix
+cm = confusion_matrix(y_test, ensemble_predictions)
+
 print(f"Accuracy: {accuracy}")
 print(f"Precision: {precision}")
 print(f"Recall: {recall}")
+print(f"Macro Precision: {macro_precision}")
+print(f"Macro Recall: {macro_recall}")
+print(f"Macro F1: {macro_f1}")
+print("Confusion Matrix:")
+print(f"  Actual\\Predicted   0      1")
+print(f"  0                  {cm[0][0]}     {cm[0][1]}")
+print(f"  1                  {cm[1][0]}     {cm[1][1]}")
 
 # Create Flask app
 app = Flask(__name__)
