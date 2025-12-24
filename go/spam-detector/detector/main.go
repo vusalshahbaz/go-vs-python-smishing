@@ -1,6 +1,7 @@
 package detector
 
 import (
+	"fmt"
 	"phishingsms/models/logistic"
 	"phishingsms/models/naivebayes"
 	"phishingsms/models/tree"
@@ -29,11 +30,16 @@ func NewSpamDetector() *SpamDetector {
 
 func (d *SpamDetector) Fit(features [][]float64, labels []float64) {
 	wg := sync.WaitGroup{}
+	total := len(features)
+
+	fmt.Printf("spamDetector.Fit() - total: %d, starting training...\n", total)
 
 	linearModel := logistic.NewLogisticRegression(500, 0.01)
 	wg.Add(1)
 	go func() {
+		fmt.Printf("spamDetector.Fit() - training LogisticRegression model...\n")
 		linearModel.Fit(features, labels)
+		fmt.Printf("spamDetector.Fit() - LogisticRegression model completed\n")
 		wg.Done()
 	}()
 
@@ -42,7 +48,9 @@ func (d *SpamDetector) Fit(features [][]float64, labels []float64) {
 	mn := naivebayes.NewMultinomialNaiveBayes(labels)
 	wg.Add(1)
 	go func() {
+		fmt.Printf("spamDetector.Fit() - training MultinomialNaiveBayes model...\n")
 		mn.Fit(features, labels)
+		fmt.Printf("spamDetector.Fit() - MultinomialNaiveBayes model completed\n")
 		wg.Done()
 	}()
 
@@ -51,17 +59,21 @@ func (d *SpamDetector) Fit(features [][]float64, labels []float64) {
 	dtree := tree.NewDecisionTreeClassifier(25)
 	wg.Add(1)
 	go func() {
+		fmt.Printf("spamDetector.Fit() - training DecisionTreeClassifier model...\n")
 		dtree.Fit(features, labels)
+		fmt.Printf("spamDetector.Fit() - DecisionTreeClassifier model completed\n")
 		wg.Done()
 	}()
 
 	d.dtree = dtree
 
 	wg.Wait()
+	fmt.Printf("spamDetector.Fit() - all models trained, processed: %d\n", total)
 }
 
 func (d *SpamDetector) Predict(features [][]float64) []float64 {
 	wg := sync.WaitGroup{}
+	total := len(features)
 
 	wg.Add(3)
 
@@ -92,8 +104,14 @@ func (d *SpamDetector) Predict(features [][]float64) []float64 {
 		predictedValue := d.ensemble([]float64{predict1[i], predict2[i], predict3[i]})
 
 		predictions[i] = predictedValue
+
+		// Progress logging
+		if (i+1)%100 == 0 || i+1 == total {
+			fmt.Printf("\rspamDetector.Predict() - total: %d, processed: %d", total, i+1)
+		}
 	}
 
+	fmt.Println() // New line after progress
 	return predictions
 }
 

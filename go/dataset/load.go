@@ -51,3 +51,42 @@ func LoadPhishingData(filename string, classess map[string]float64) ([]string, [
 
 	return features, labels
 }
+
+func LoadTextData(filename string, classes map[string]float64) ([]string, []float64) {
+	file, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+
+	records, err := csv.NewReader(file).ReadAll()
+	if err != nil {
+		panic(err)
+	}
+
+	records = records[1:] // Skip header
+
+	r := rand.New(&randomSource{})
+
+	r.Shuffle(len(records), func(i, j int) {
+		records[i], records[j] = records[j], records[i]
+	})
+
+	features := make([]string, len(records))
+	labels := make([]float64, len(records))
+
+	for i, record := range records {
+		// For IMDB format: review is in column 0, sentiment is in column 1
+		features[i] = record[0]
+
+		label, ok := classes[record[1]]
+		if !ok {
+			panic(fmt.Sprintf("Unknown class: %s", record[1]))
+		}
+
+		labels[i] = label
+	}
+
+	return features, labels
+}

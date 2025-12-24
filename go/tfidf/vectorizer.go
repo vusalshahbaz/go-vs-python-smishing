@@ -1,6 +1,7 @@
 package tfidf
 
 import (
+	"fmt"
 	"github.com/go-nlp/tfidf"
 	"sort"
 )
@@ -58,12 +59,15 @@ func getTfidf(features int, texts []string) (*tfidf.TFIDF, []wordScore) {
 
 func (v *Vectorizer) Transform(texts []string) [][]float64 {
 	var result [][]float64
+	total := len(texts)
 
-	for _, text := range texts {
+	for i, text := range texts {
 		scores := v.Scan(text)
 		result = append(result, scores)
+		fmt.Printf("\rvectorizer.Transform() - total: %d, processed: %d", total, i+1)
 	}
 
+	fmt.Println() // New line after progress
 	return result
 }
 
