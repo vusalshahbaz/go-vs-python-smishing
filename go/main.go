@@ -7,12 +7,13 @@ import (
 	"phishingsms/app"
 	"phishingsms/dataset"
 	"phishingsms/tfidf"
+	"time"
 )
 
 func main() {
 	features, labels := dataset.LoadPhishingData("./spam.csv")
 
-	vectorizer := tfidf.New(100, features)
+	vectorizer := tfidf.New(2000, features)
 
 	vectorizedFeatures := vectorizer.Transform(features)
 
@@ -22,9 +23,17 @@ func main() {
 
 	detector := app.NewPhishingDetector()
 
+	start := time.Now()
 	detector.Fit(XTrain, YTrain)
+	elapsed := time.Since(start)
 
+	fmt.Println("Time taken to fit the model:", elapsed)
+
+	start = time.Now()
 	predictions := detector.Predict(XTest)
+
+	elapsed = time.Since(start)
+	fmt.Println("Time taken to predict:", elapsed)
 
 	prediction := detector.Stats(predictions, YTest)
 

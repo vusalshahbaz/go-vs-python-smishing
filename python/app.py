@@ -7,7 +7,8 @@ from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from flask import Flask, request, jsonify
-
+from sklearn.metrics import accuracy_score, precision_score, recall_score
+import time
 # Load dataset
 def load_data():
     df1 = pd.read_csv("./spam.csv", usecols=["label", "message"])
@@ -48,8 +49,26 @@ ensemble = VotingClassifier(
     voting='hard'
 )
 
+time_start = time.time()
+
 # Train the ensemble
 ensemble.fit(X_train, y_train)
+
+elapsed = time.time() - time_start
+print(f"Time taken to fit the model: {elapsed} seconds")
+
+time_start = time.time()
+ensemble_predictions = ensemble.predict(X_test)
+
+elapsed = time.time() - time_start
+print(f"Time taken to predict: {elapsed} seconds")
+
+accuracy = accuracy_score(y_test, ensemble_predictions)
+precision = precision_score(y_test, ensemble_predictions)
+recall = recall_score(y_test, ensemble_predictions)
+print(f"Accuracy: {accuracy}")
+print(f"Precision: {precision}")
+print(f"Recall: {recall}")
 
 # Create Flask app
 app = Flask(__name__)

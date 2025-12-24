@@ -57,9 +57,30 @@ func (d *PhishingDetector) Fit(features [][]float64, labels []float64) {
 }
 
 func (d *PhishingDetector) Predict(features [][]float64) []float64 {
-	predict1 := d.logisticRegression.Predict(features)
-	predict2 := d.multiNominalNaiveBayes.Predict(features)
-	predict3 := d.dtree.Predict(features)
+	wg := sync.WaitGroup{}
+
+	wg.Add(3)
+
+	var predict1 []float64
+	var predict2 []float64
+	var predict3 []float64
+
+	go func() {
+		predict1 = d.logisticRegression.Predict(features)
+		wg.Done()
+	}()
+
+	go func() {
+		predict2 = d.multiNominalNaiveBayes.Predict(features)
+		wg.Done()
+	}()
+
+	go func() {
+		predict3 = d.dtree.Predict(features)
+		wg.Done()
+	}()
+
+	wg.Wait()
 
 	predictions := make([]float64, len(features))
 
