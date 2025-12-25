@@ -29,8 +29,20 @@ func TrainTestSplit(features [][]float64, labels []float64, trainRatio float64) 
 	})
 
 	// Calculate split sizes for each class (maintains class distribution)
+	// Account for rounding loss: calculate total expected train size first,
+	// then adjust one of the sizes to match the expected total
+	totalSamples := len(class0Indices) + len(class1Indices)
+	expectedTrainSize := int(float64(totalSamples) * trainRatio)
+
 	trainSize0 := int(float64(len(class0Indices)) * trainRatio)
 	trainSize1 := int(float64(len(class1Indices)) * trainRatio)
+
+	// Adjust for rounding loss to match expected total train size
+	actualTrainSize := trainSize0 + trainSize1
+	if actualTrainSize < expectedTrainSize {
+		// Add the difference to trainSize1 to compensate for rounding loss
+		trainSize1 += expectedTrainSize - actualTrainSize
+	}
 
 	// Collect train and test indices
 	trainIndices := make([]int, 0, trainSize0+trainSize1)
