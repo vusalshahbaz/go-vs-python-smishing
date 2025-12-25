@@ -2,6 +2,7 @@ package naivebayes
 
 import (
 	"math"
+	"sync"
 )
 
 // MultinomialNaiveBayes works with TF-IDF features by treating them as counts
@@ -68,9 +69,17 @@ func (mnb *MultinomialNaiveBayes) Fit(features [][]float64, labels []float64) {
 func (mnb *MultinomialNaiveBayes) Predict(features [][]float64) []float64 {
 	predictions := make([]float64, len(features))
 
+	wg := sync.WaitGroup{}
+
 	for i, featureSet := range features {
-		predictions[i] = mnb.PredictSingle(featureSet)
+		wg.Add(1)
+		go func(i int, featureSet []float64) {
+			predictions[i] = mnb.PredictSingle(featureSet)
+			wg.Done()
+		}(i, featureSet)
 	}
+
+	wg.Wait()
 
 	return predictions
 }

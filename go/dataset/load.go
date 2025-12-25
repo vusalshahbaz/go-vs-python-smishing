@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"os"
+	"strings"
 )
 
 type randomSource struct{}
@@ -78,7 +79,7 @@ func LoadTextData(filename string, classes map[string]float64) ([]string, []floa
 
 	for i, record := range records {
 		// For IMDB format: review is in column 0, sentiment is in column 1
-		features[i] = record[0]
+		features[i] = strings.ReplaceAll(strings.ReplaceAll(record[0], "<br /><br />", " "), "-", " ")
 
 		label, ok := classes[record[1]]
 		if !ok {

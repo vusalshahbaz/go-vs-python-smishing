@@ -82,17 +82,23 @@ func (d *TextClassifier) Predict(features [][]float64) []float64 {
 	var predict3 []float64
 
 	go func() {
+		fmt.Printf("textClassifier.Predict() - predicting LogisticRegression model...\n")
 		predict1 = d.logisticRegression.Predict(features)
+		fmt.Printf("textClassifier.Predict() - LogisticRegression model completed\n")
 		wg.Done()
 	}()
 
 	go func() {
+		fmt.Printf("textClassifier.Predict() - predicting MultinomialNaiveBayes model...\n")
 		predict2 = d.multiNominalNaiveBayes.Predict(features)
+		fmt.Printf("textClassifier.Predict() - MultinomialNaiveBayes model completed\n")
 		wg.Done()
 	}()
 
 	go func() {
+		fmt.Printf("textClassifier.Predict() - predicting DecisionTreeClassifier model...\n")
 		predict3 = d.dtree.Predict(features)
+		fmt.Printf("textClassifier.Predict() - DecisionTreeClassifier model completed\n")
 		wg.Done()
 	}()
 

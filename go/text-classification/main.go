@@ -30,6 +30,7 @@ func main() {
 	fmt.Println("Time taken to fit the model:", elapsed)
 
 	start = time.Now()
+	fmt.Println("Predicting...")
 	predictions := textClassifier.Predict(XTest)
 
 	elapsed = time.Since(start)
