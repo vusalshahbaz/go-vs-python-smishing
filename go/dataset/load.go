@@ -91,3 +91,59 @@ func LoadTextData(filename string, classes map[string]float64) ([]string, []floa
 
 	return features, labels
 }
+
+func LoadPhishingEmailData(filename string, classes map[string]float64) ([]string, []float64) {
+	file, err := os.Open(filename)
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+
+	records, err := csv.NewReader(file).ReadAll()
+	if err != nil {
+		panic(err)
+	}
+
+	records = records[1:] // Skip header
+
+	// Filter out malformed rows first
+	validRecords := make([][]string, 0, len(records))
+	for _, record := range records {
+		if len(record) >= 3 {
+			validRecords = append(validRecords, record)
+		}
+	}
+
+	r := rand.New(&randomSource{})
+
+	r.Shuffle(len(validRecords), func(i, j int) {
+		validRecords[i], validRecords[j] = validRecords[j], validRecords[i]
+	})
+
+	features := make([]string, len(validRecords))
+	labels := make([]float64, len(validRecords))
+
+	for i, record := range validRecords {
+		// CSV format: subject (col 1, index 0), body (col 2, index 1), label (col 3, index 2)
+		// We need columns 2 and 3 (1-indexed) = indices 1 and 2 (0-indexed)
+		// Ignore subject (column 1/index 0), use body (column 2/index 1) and label (column 3/index 2)
+		if len(record) < 3 {
+			continue // Skip if not enough columns
+		}
+
+		// Column 2 (1-indexed) = index 1 (0-indexed) = body
+		features[i] = record[1]
+
+		// Column 3 (1-indexed) = index 2 (0-indexed) = label
+		labelStr := strings.TrimSpace(record[2])
+		label, ok := classes[labelStr]
+		if !ok {
+			panic(fmt.Sprintf("Unknown class: %s", labelStr))
+		}
+
+		labels[i] = label
+	}
+
+	return features, labels
+}
