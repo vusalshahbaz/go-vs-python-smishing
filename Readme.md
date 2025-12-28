@@ -1,6 +1,10 @@
-# Phishing SMS Detection: Go vs Python
+# Machine Learning: Go vs Python Comparison
 
-This project compares the performance of three machine learning models implemented in **Go** and **Python** to detect **phishing SMS messages**.
+This project compares the performance of machine learning implementations in **Go** and **Python** across three different applications. We developed three apps to compare implementations of Golang and Python:
+
+1. **Spam Detection** - Using UCI Spam SMS Collection dataset
+2. **Phishing Email Detection** - Email phishing detection system
+3. **Text Classification** - Large-scale text classification for 50k IMDB dataset
 
 ## 🧠 Machine Learning Algorithms Used
 
@@ -14,17 +18,28 @@ Each model was implemented and tested in both **Go** and **Python** environments
 
 ---
 
-## 📊 Model Metrics
+## 📊 Results
 
-| **Metric**   | **Go** | **Python** |
-|--------------|--------|------------|
-| Accuracy     | 0.95   | 0.97       |
-| Precision    | 0.92   | 0.97       |
-| Recall       | 0.85   | 0.87       |
-| F1-Score     | 0.88   | 0.92       |
+### Spam Detection Model Metrics
 
-> **Description:**  
-> This table shows the classification performance metrics of the models in both Go and Python implementations. While Python achieves slightly higher scores, Go remains competitive with excellent performance.
+| | **Accuracy** | **Precision (macro)** | **Recall (macro)** | **F1** | **Training Time (seconds)** | **Test Time (seconds)** |
+|---|---|---|---|---|---|---|
+| **Go** | 96,59 | 98,1 | 87,24 | 91,72 | 0.4 | < 0.1 |
+| **Python** | 98,47 | 99,13 | 94,29 | 96,53 | < 0.1 | < 0.1 |
+
+### Email Phishing Detection
+
+| | **Accuracy** | **Precision (macro)** | **Recall (macro)** | **F1** | **Training Time (seconds)** | **Test Time (seconds)** |
+|---|---|---|---|---|---|---|
+| **Go** | 98,77 | 99,28 | 96,19 | 97,66 | 2,6 | 0.2 |
+| **Python** | 99,47 | 99,24 | 98,8 | 99,02 | 0,4 | < 0.1 |
+
+### Text Classification
+
+| | **Accuracy** | **Precision** | **Recall** | **F1** | **Training Time (seconds)** | **Test Time (seconds)** |
+|---|---|---|---|---|---|---|
+| **Go** | 80,63 | 81,89 | 80,63 | 80,43 | 46 | 67 |
+| **Python** | 87,28 | 87,31 | 87,28 | 87,27 | 10 | < 0,1 |
 
 ---
 
