@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"phishingsms/dataset"
-	"phishingsms/text-classification/detector"
+	"phishingsms/internal/text-classification/detector"
 	"phishingsms/tfidf"
 	"time"
 )

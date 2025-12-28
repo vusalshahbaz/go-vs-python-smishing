@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"net/http"
 	"phishingsms/dataset"
-	"phishingsms/spam-detector/detector"
+	"phishingsms/internal/phishing-email-detector/detector"
 	"phishingsms/tfidf"
 	"time"
 )
 
 func main() {
-	features, labels := dataset.LoadPhishingData("./spam.csv", map[string]float64{"ham": 0, "spam": 1})
+	features, labels := dataset.LoadPhishingEmailData("./ling.csv", map[string]float64{"0": 0, "1": 1})
 
 	vectorizer := tfidf.New(2000, features)
 
@@ -21,21 +21,21 @@ func main() {
 
 	XTrain, YTrain, XTest, YTest := dataset.TrainTestSplit(vectorizedFeatures, labels, 0.8)
 
-	spamDetector := detector.NewSpamDetector()
+	phishingDetector := detector.NewPhishingEmailDetector()
 
 	start := time.Now()
-	spamDetector.Fit(XTrain, YTrain)
+	phishingDetector.Fit(XTrain, YTrain)
 	elapsed := time.Since(start)
 
 	fmt.Println("Time taken to fit the model:", elapsed)
 
 	start = time.Now()
-	predictions := spamDetector.Predict(XTest)
+	predictions := phishingDetector.Predict(XTest)
 
 	elapsed = time.Since(start)
 	fmt.Println("Time taken to predict:", elapsed)
 
-	prediction := spamDetector.Stats(predictions, YTest)
+	prediction := phishingDetector.Stats(predictions, YTest)
 
 	fmt.Println("Accuracy:", prediction.Accuracy)
 	fmt.Println("Precision:", prediction.Precision)
@@ -48,10 +48,10 @@ func main() {
 	fmt.Printf("  0                  %.0f     %.0f\n", prediction.ConfusionMatrix["0"]["0"], prediction.ConfusionMatrix["0"]["1"])
 	fmt.Printf("  1                  %.0f     %.0f\n", prediction.ConfusionMatrix["1"]["0"], prediction.ConfusionMatrix["1"]["1"])
 
-	runHttpServer(vectorizer, spamDetector)
+	runHttpServer(vectorizer, phishingDetector)
 }
 
-func runHttpServer(vectorizer *tfidf.Vectorizer, spamDetector *detector.SpamDetector) {
+func runHttpServer(vectorizer *tfidf.Vectorizer, phishingDetector *detector.PhishingEmailDetector) {
 	type Request struct {
 		Message string `json:"message"`
 	}
@@ -68,7 +68,7 @@ func runHttpServer(vectorizer *tfidf.Vectorizer, spamDetector *detector.SpamDete
 		vectorized := vectorizer.Transform([]string{text})
 
 		res := map[string]interface{}{
-			"predictions": spamDetector.Predict(vectorized),
+			"predictions": phishingDetector.Predict(vectorized),
 		}
 
 		fmt.Println(text, res)
