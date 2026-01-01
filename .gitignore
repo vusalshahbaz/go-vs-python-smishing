@@ -1,0 +1,73 @@
+
+##################################
+# IDEs & Editors
+##################################
+# JetBrains (GoLand, PyCharm)
+.idea/
+*.iml
+
+# VS Code / Cursor
+.vscode/
+.cursor/
+
+##################################
+# Python
+##################################
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments (any app name)
+venv/
+.venv/
+env/
+.env/
+.env*/
+
+# venv inside sub-apps (e.g. app/venv, python-app/venv)
+**/venv/
+**/.venv/
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+##################################
+# Go
+##################################
+# Build artifacts
+bin/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go test & coverage
+*.test
+*.out
+coverage.out
+
+# Go workspace
+go.work
+go.work.sum
+
+##################################
+# Benchmarks / Results
+##################################
+benchmarks/results/
+benchmarks/*.log
+benchmarks/*.json
+benchmarks/*.csv
+
+##################################
+# Logs & Temp
+##################################
+*.log
+tmp/
+temp/
