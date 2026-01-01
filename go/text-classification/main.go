@@ -9,13 +9,13 @@ import (
 	"math/rand/v2"
 	"net/http"
 	"os"
-	"phishingsms/internal/text-classification/detector"
 	"strings"
+	"text-classification/classifier"
 	"time"
 )
 
 func main() {
-	features, labels := LoadTextData("./IMDB Dataset.csv", map[string]float64{"negative": 0, "positive": 1})
+	features, labels := LoadTextData("../datasets/IMDB Dataset.csv", map[string]float64{"negative": 0, "positive": 1})
 
 	vectorizer := tfidf.New(2000, features)
 

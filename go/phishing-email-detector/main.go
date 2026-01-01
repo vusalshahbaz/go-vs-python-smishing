@@ -9,13 +9,13 @@ import (
 	"math/rand/v2"
 	"net/http"
 	"os"
-	"phishingsms/internal/phishing-email-detector/detector"
+	"phishing-email-detector/detector"
 	"strings"
 	"time"
 )
 
 func main() {
-	features, labels := LoadPhishingEmailData("./ling.csv", map[string]float64{"0": 0, "1": 1})
+	features, labels := LoadPhishingEmailData("../datasets/phishing-email.csv", map[string]float64{"0": 0, "1": 1})
 
 	vectorizer := tfidf.New(2000, features)
 
