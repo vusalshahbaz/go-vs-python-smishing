@@ -11,7 +11,7 @@ import time
 
 # Load IMDB dataset
 def load_imdb_data():
-    df = pd.read_csv("../datasets/IMDB Dataset.csv", usecols=["review", "sentiment"])
+    df = pd.read_csv("../../datasets/IMDB Dataset.csv", usecols=["review", "sentiment"])
     df["sentiment"] = df["sentiment"].map({'negative': 0, 'positive': 1})
     df = df[["review", "sentiment"]].dropna()
     return df

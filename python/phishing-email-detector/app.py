@@ -11,7 +11,7 @@ import time
 
 # Load phishing email dataset
 def load_phishing_email_data():
-    df = pd.read_csv("../datasets/spam-phishing-emails.csv", usecols=["subject", "body", "label"])
+    df = pd.read_csv("../../datasets/phishing-emails.csv", usecols=["subject", "body", "label"])
     # Ignore subject column, use only body
     df = df[["body", "label"]].dropna()
     df["label"] = df["label"].astype(int)  # Convert label to int

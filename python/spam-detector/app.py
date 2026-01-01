@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import time
 # Load dataset
 def load_data():
-    df1 = pd.read_csv("../datasets/spam-sms.csv", usecols=["label", "message"])
+    df1 = pd.read_csv("../../datasets/spam-sms.csv", usecols=["label", "message"])
     df1["label"] = df1["label"].map({'ham': 0, 'spam': 1})
     df1 = df1[["message", "label"]].dropna()
 

@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	features, labels := LoadTextData("../datasets/IMDB Dataset.csv", map[string]float64{"negative": 0, "positive": 1})
+	features, labels := LoadTextData("../../datasets/IMDB Dataset.csv", map[string]float64{"negative": 0, "positive": 1})
 
 	vectorizer := tfidf.New(2000, features)
 
@@ -25,7 +25,7 @@ func main() {
 
 	XTrain, YTrain, XTest, YTest := dataset.TrainTestSplit(vectorizedFeatures, labels, 0.8)
 
-	textClassifier := detector.NewTextClassifier()
+	textClassifier := classifier.NewTextClassifier()
 
 	start := time.Now()
 	textClassifier.Fit(XTrain, YTrain)
@@ -56,7 +56,7 @@ func main() {
 	runHttpServer(vectorizer, textClassifier)
 }
 
-func runHttpServer(vectorizer *tfidf.Vectorizer, textClassifier *detector.TextClassifier) {
+func runHttpServer(vectorizer *tfidf.Vectorizer, textClassifier *classifier.TextClassifier) {
 	type Request struct {
 		Message string `json:"message"`
 	}
