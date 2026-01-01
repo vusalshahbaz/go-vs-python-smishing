@@ -14,7 +14,12 @@ import (
 )
 
 func main() {
-	features, labels := LoadPhishingData("../../datasets/spam-sms.csv", map[string]float64{"ham": 0, "spam": 1})
+	datasetPath := "../../datasets/spam-sms.csv"
+	if len(os.Args) > 1 {
+		datasetPath = os.Args[1]
+	}
+
+	features, labels := LoadPhishingData(datasetPath, map[string]float64{"ham": 0, "spam": 1})
 
 	vectorizer := tfidf.New(2000, features)
 

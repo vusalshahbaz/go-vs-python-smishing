@@ -9,9 +9,11 @@ from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from flask import Flask, request, jsonify
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import time
+import sys
+
 # Load dataset
-def load_data():
-    df1 = pd.read_csv("../../datasets/spam-sms.csv", usecols=["label", "message"])
+def load_data(dataset_path):
+    df1 = pd.read_csv(dataset_path, usecols=["label", "message"])
     df1["label"] = df1["label"].map({'ham': 0, 'spam': 1})
     df1 = df1[["message", "label"]].dropna()
 
@@ -21,7 +23,11 @@ def load_data():
 def preprocess(text):
     return text.lower().strip()
 
-df = load_data()
+dataset_path = "../../datasets/spam-sms.csv"
+if len(sys.argv) > 1:
+    dataset_path = sys.argv[1]
+
+df = load_data(dataset_path)
 df['message'] = df['message'].apply(preprocess)
 
 # Convert text to TF-IDF features

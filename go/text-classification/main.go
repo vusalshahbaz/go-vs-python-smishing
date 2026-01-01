@@ -15,7 +15,12 @@ import (
 )
 
 func main() {
-	features, labels := LoadTextData("../../datasets/IMDB Dataset.csv", map[string]float64{"negative": 0, "positive": 1})
+	datasetPath := "../../datasets/IMDB.csv"
+	if len(os.Args) > 1 {
+		datasetPath = os.Args[1]
+	}
+
+	features, labels := LoadTextData(datasetPath, map[string]float64{"negative": 0, "positive": 1})
 
 	vectorizer := tfidf.New(2000, features)
 

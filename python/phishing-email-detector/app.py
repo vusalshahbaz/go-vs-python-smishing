@@ -8,10 +8,11 @@ from sklearn.ensemble import VotingClassifier
 from flask import Flask, request, jsonify
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import time
+import sys
 
 # Load phishing email dataset
-def load_phishing_email_data():
-    df = pd.read_csv("../../datasets/phishing-emails.csv", usecols=["subject", "body", "label"])
+def load_phishing_email_data(dataset_path):
+    df = pd.read_csv(dataset_path, usecols=["subject", "body", "label"])
     # Ignore subject column, use only body
     df = df[["body", "label"]].dropna()
     df["label"] = df["label"].astype(int)  # Convert label to int
@@ -21,8 +22,12 @@ def load_phishing_email_data():
 def preprocess(text):
     return text.lower().strip()
 
+dataset_path = "../../datasets/phishing-emails.csv"
+if len(sys.argv) > 1:
+    dataset_path = sys.argv[1]
+
 print("Loading phishing email dataset...")
-df = load_phishing_email_data()
+df = load_phishing_email_data(dataset_path)
 df['body'] = df['body'].apply(preprocess)
 
 print(f"Total samples: {len(df)}")

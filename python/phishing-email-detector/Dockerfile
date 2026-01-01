@@ -1,4 +1,4 @@
-FROM python:3.11-alpine
+FROM python:3.11-alpine3.22
 
 # Set work directory
 WORKDIR /app
@@ -10,9 +10,14 @@ RUN apk add --no-cache build-base openblas-dev && \
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy app and data
+# Copy application code
 COPY . .
+
+# Copy dataset (dataset file should be in project directory before building)
+# Build with: cp ../../datasets/phishing-emails.csv . && docker build --no-cache -t <name> .
+RUN mkdir -p /app/datasets
+COPY phishing-emails.csv /app/datasets/phishing-emails.csv
 
 EXPOSE 8080
 
-CMD ["python", "app.py"]
+CMD ["python", "app.py", "/app/datasets/phishing-emails.csv"]

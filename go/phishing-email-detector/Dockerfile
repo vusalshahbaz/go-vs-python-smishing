@@ -1,15 +1,20 @@
-FROM golang:1.24.4-alpine3.22
+FROM golang:1.25.4-alpine3.22
 
 # Set work directory
 WORKDIR /app
 
-# Copy app and data
-COPY . .
-
-# Install dependencies (Alpine needs build tools for numpy & pandas)
+# Copy go.mod and go.sum first for better caching
+COPY go.mod go.sum ./
 RUN go mod download
 
+# Copy application code
+COPY . .
+
+# Copy dataset (dataset file should be in project directory before building)
+# Build with: cp ../../datasets/phishing-emails.csv . && docker build --no-cache -t <name> .
+RUN mkdir -p /app/datasets
+COPY phishing-emails.csv /app/datasets/phishing-emails.csv
 
 EXPOSE 8080
 
-CMD ["go", "run", "main.go"]
+CMD ["go", "run", "main.go", "/app/datasets/phishing-emails.csv"]

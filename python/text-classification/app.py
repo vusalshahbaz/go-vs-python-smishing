@@ -8,10 +8,11 @@ from sklearn.ensemble import VotingClassifier
 from flask import Flask, request, jsonify
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import time
+import sys
 
 # Load IMDB dataset
-def load_imdb_data():
-    df = pd.read_csv("../../datasets/IMDB Dataset.csv", usecols=["review", "sentiment"])
+def load_imdb_data(dataset_path):
+    df = pd.read_csv(dataset_path, usecols=["review", "sentiment"])
     df["sentiment"] = df["sentiment"].map({'negative': 0, 'positive': 1})
     df = df[["review", "sentiment"]].dropna()
     return df
@@ -20,8 +21,12 @@ def load_imdb_data():
 def preprocess(text):
     return text.lower().strip()
 
+dataset_path = "../../datasets/IMDB.csv"
+if len(sys.argv) > 1:
+    dataset_path = sys.argv[1]
+
 print("Loading IMDB dataset...")
-df = load_imdb_data()
+df = load_imdb_data(dataset_path)
 df['review'] = df['review'].apply(preprocess)
 
 print(f"Total samples: {len(df)}")
